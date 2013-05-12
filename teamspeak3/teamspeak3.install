@@ -1,15 +1,20 @@
 <?php
 
 /**
- * Hook called on module uninstall
- * Will delete dynamic variables created by the module
- **/
+ * @file
+ * Remove variables on module uninstall.
+ */
+
+
+/**
+ * Implements hook_uninstall().
+ */
 function teamspeak3_uninstall() {
-    variable_del('teamspeak3_address');
-    variable_del('teamspeak3_port');
-    variable_del('teamspeak3_server_id');
-    variable_del('teamspeak3_username');
-    variable_del('teamspeak3_password');
-    variable_del('teamspeak3_timeout');
-    variable_del('teamspeak3_cache_time');
+  variable_del('teamspeak3_address');
+  variable_del('teamspeak3_port');
+  variable_del('teamspeak3_server_id');
+  variable_del('teamspeak3_username');
+  variable_del('teamspeak3_password');
+  variable_del('teamspeak3_timeout');
+  variable_del('teamspeak3_cache_time');
 }

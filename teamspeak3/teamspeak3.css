@@ -1,36 +1,37 @@
-.teamspeak-viewer { 
-  width: 100%;  
-  overflow: hidden;  
-  position: relative;  
+.teamspeak-viewer {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
 }
-.teamspeak-viewer * { 
+.teamspeak-viewer * {
   font-size: 0.949em;
-  vertical-align: -4px; 
-  white-space: nowrap; 
-  margin: 0; 
-  padding: 0; 
+  vertical-align: -4px;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
 }
-.teamspeak-viewer img { 
-  margin-right: 2px; border: 0; 
+.teamspeak-viewer img {
+  margin-right: 2px;
+  border: 0;
 }
-.teamspeak-viewer .teamspeak-server-name { 
-  font-weight:normal; 
+.teamspeak-viewer .teamspeak-server-name {
+  font-weight: normal;
 }
-.teamspeak-viewer .teamspeak-item { 
-  margin-left: 18px; 
-  clear: both; 
+.teamspeak-viewer .teamspeak-item {
+  margin-left: 18px;
+  clear: both;
 }
-.teamspeak-viewer .teamspeak-label { 
-  float: left; 
+.teamspeak-viewer .teamspeak-label {
+  float: left;
 }
-.teamspeak-error { 
-  font-size: 11px; 
-  color: #FF0000; 
+.teamspeak-error {
+  font-size: 11px;
+  color: #ff0000;
 }
-.teamspeak-spacer { 
-  text-align: center; 
+.teamspeak-spacer {
+  text-align: center;
   margin: 1px 0px 1px -18px;
 }
-.teamspeak-spacer .teamspeak-spacer-line { 
-  height: 1px; 
+.teamspeak-spacer .teamspeak-spacer-line {
+  height: 1px;
 }

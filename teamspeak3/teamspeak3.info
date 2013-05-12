@@ -1,7 +1,4 @@
 name = Teamspeak 3
 description = "This module provide a simple Teamspeak 3 server web viewer"
 package = "Teamspeak"
-version = "7.x-1.0"
 core = "7.x"
-project = "teamspeak3"
-datestamp = "1355698200"
