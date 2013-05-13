@@ -159,7 +159,7 @@ function teamspeak3_send_command($socket, $command) {
 /**
  * Render the Teamspeak 3 users list.
  */
-function teamspeak3_render_users($usersdata, $parent_id, $images_path) {
+function teamspeak3_render_users($usersdata, $parent_id, $imagespath) {
 
   $output = '';
   foreach ($usersdata as $user) {
@@ -189,7 +189,7 @@ function teamspeak3_render_users($usersdata, $parent_id, $images_path) {
 
       $output .= '<div class="teamspeak-item">';
       $output .= '<div class="teamspeak-label">';
-      $output .= '<img src="' . $images_path . $icon . '" />' . htmlentities($user["client_nickname"], ENT_QUOTES, "UTF-8");
+      $output .= '<img src="' . $imagespath . $icon . '" />' . htmlentities($user["client_nickname"]);
       $output .= '</div></div>';
 
     }
@@ -218,7 +218,7 @@ function teamspeak3_render_spacer($spacer) {
 /**
  * Render the Teamspeak 3 channels list.
  */
-function teamspeak3_render_channels($channelsdata, $usersdata, $parent_id, $images_path) {
+function teamspeak3_render_channels($channelsdata, $usersdata, $parent_id, $imagespath) {
 
   $output = '';
   foreach ($channelsdata as $channel) {
@@ -228,7 +228,7 @@ function teamspeak3_render_channels($channelsdata, $usersdata, $parent_id, $imag
       if (stristr($channel["channel_name"], 'spacer')) {
 
         $output .= teamspeak3_render_spacer($channel["channel_name"]);
-        $output .= teamspeak3_render_channels($channelsdata, $usersdata, $channel["cid"], $images_path);
+        $output .= teamspeak3_render_channels($channelsdata, $usersdata, $channel["cid"], $imagespath);
 
       }
       else {
@@ -249,15 +249,15 @@ function teamspeak3_render_channels($channelsdata, $usersdata, $parent_id, $imag
 
         $output .= '<div class="teamspeak-item">';
         $output .= '<div class="teamspeak-label">';
-        $output .= '<img src="' . $images_path . $icon . '" />' . $channel["channel_name"];
+        $output .= '<img src="' . $imagespath . $icon . '" />' . htmlentities($channel["channel_name"]);
         $output .= '</div>';
 
         if (count($usersdata) > 0) {
           // If the channel is not empty, render the users.
-          $output .= teamspeak3_render_users($usersdata, $channel["cid"], $images_path);
+          $output .= teamspeak3_render_users($usersdata, $channel["cid"], $imagespath);
         }
 
-        $output .= teamspeak3_render_channels($channelsdata, $usersdata, $channel["cid"], $images_path);
+        $output .= teamspeak3_render_channels($channelsdata, $usersdata, $channel["cid"], $imagespath);
         $output .= '</div>';
       }
 
@@ -279,47 +279,50 @@ function teamspeak3_render() {
   $serverdata = array();
   $channelsdata = array();
   $usersdata = array();
-  $images_path = base_path() . drupal_get_path('module', 'teamspeak3') . '/images/';
-  $cache_file = drupal_get_path('module', 'teamspeak3') . '/cache/teamspeak.cache';
-  $teamspeak_ip = variable_get('teamspeak3_address', '');
-  $teamspeak_port = variable_get('teamspeak3_port', 10011);
-  $teamspeak_sid = variable_get('teamspeak3_server_id', 1);
-  $teamspeak_username = variable_get('teamspeak3_username', '');
-  $teamspeak_password = variable_get('teamspeak3_password', '');
-  $teamspeak_timeout = variable_get('teamspeak3_timeout', 3);
-  $teamspeak_cache_time = variable_get('teamspeak3_cache_time', 30);
 
-  if ($teamspeak_cache_time > 0 && file_exists($cache_file) && (filemtime($cache_file) + $teamspeak_cache_time >= time())) {
-    // Fetch block content from the cache file.
-    return file_get_contents($cache_file);
+  $address = variable_get('teamspeak3_address', NULL);
+  $port = variable_get('teamspeak3_port', 10011);
+  $serverid = variable_get('teamspeak3_server_id', 1);
+  $username = variable_get('teamspeak3_username', NULL);
+  $password = variable_get('teamspeak3_password', NULL);
+  $timeout = variable_get('teamspeak3_timeout', 3);
+  $cachetime = variable_get('teamspeak3_cache_time', 30);
+  $cachedata = variable_get('teamspeak3_cache_data', NULL);
+  $lastcachetime = variable_get('teamspeak3_last_cache_time', NULL);
+  $imagespath = base_path() . drupal_get_path('module', 'teamspeak3') . '/images/';
+
+  // If cache is enabled and we got data set in the cache variable.
+  if (($cachetime > 0) && ($cachedata != NULL) && ($lastcachetime != NULL) && (($lastcachetime + ($cachetime)) > time())) {
+    // Fetch block content from the cache.
+    return $cachedata;
   }
 
   try {
 
-    if (trim($teamspeak_ip) == "") {
+    if ($address == NULL) {
       throw new Exception("Server query address has not been configured");
     }
 
-    if (trim($teamspeak_username) == "") {
+    if ($username == NULL) {
       throw new Exception("Server query username has not been configured");
     }
 
-    if (trim($teamspeak_password) == "") {
+    if ($password == NULL) {
       throw new Exception("Server query password has not been configured");
     }
 
-    $socket = @fsockopen($teamspeak_ip, $teamspeak_port, $errno, $errstr, $teamspeak_timeout);
+    $socket = @fsockopen($address, $port, $errno, $errstr, $timeout);
     if (!$socket) {
       throw new Exception("Socket error: $errstr [$errno]");
     }
 
-    @socket_set_timeout($socket, $teamspeak_timeout);
+    @socket_set_timeout($socket, $timeout);
     if (!trim(fgets($socket)) == "TS3") {
       throw new Exception("Not a Teamspeak 3 server/bad query port");
     }
 
     $response  = "";
-    $response .= teamspeak3_send_command($socket, "use sid=" . $teamspeak_sid);
+    $response .= teamspeak3_send_command($socket, "use sid=" . $serverid);
     $response .= teamspeak3_send_command($socket, "serverinfo");
     $response .= teamspeak3_send_command($socket, "channellist -topic -flags -voice -limits");
     $response .= teamspeak3_send_command($socket, "clientlist -uid -away -voice -groups");
@@ -337,21 +340,20 @@ function teamspeak3_render() {
       $usersdata = teamspeak3_parse_line($lines[3]);
       usort($usersdata, "teamspeak3_sort_users");
 
-      // BEGIN OUTPUT RENDER.
+      // Render the block content.
       $output .= '<div class="teamspeak-viewer">';
 
-      $output .= '<div class="teamspeak-server-name"><img src="' . $images_path . '16x16_server_green.png" />' . $serverdata["virtualserver_name"] . "</div>";
+      $output .= '<div class="teamspeak-server-name"><img src="' . $imagespath . '16x16_server_green.png" />' . $serverdata["virtualserver_name"] . "</div>";
       if (count($channelsdata) > 0) {
-        $output .= teamspeak3_render_channels($channelsdata, $usersdata, 0, $images_path);
+        $output .= teamspeak3_render_channels($channelsdata, $usersdata, 0, $imagespath);
       }
 
       $output .= '</div>';
 
-      // CACHING THE OUTPUT.
-      if ($teamspeak_cache_time > 0) {
-        if (!@file_put_contents($cache_file, $output)) {
-          throw new Exception("Unable to write to file: " . $cache_file);
-        }
+      // Cache the output.
+      if ($cachetime > 0) {
+        variable_set('teamspeak3_cache_data', $output);
+        variable_set('teamspeak3_last_cache_time', time());
       }
 
     }
@@ -400,4 +402,5 @@ function teamspeak3_block_view($delta) {
       break;
 
   }
+
 }

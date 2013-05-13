@@ -17,4 +17,6 @@ function teamspeak3_uninstall() {
   variable_del('teamspeak3_password');
   variable_del('teamspeak3_timeout');
   variable_del('teamspeak3_cache_time');
+  variable_del('teamspeak3_cache_data');
+  variable_del('teamspeak3_last_cache_time');
 }

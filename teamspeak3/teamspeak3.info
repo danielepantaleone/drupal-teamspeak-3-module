@@ -1,4 +1,5 @@
 name = Teamspeak 3
 description = "This module provide a simple Teamspeak 3 server web viewer"
-package = "Teamspeak"
+package = "Other"
 core = "7.x"
+configure = admin/config/teamspeak/settings
