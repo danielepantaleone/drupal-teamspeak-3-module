@@ -7,16 +7,16 @@
 
 
 /**
- * Implements hook_admin().
+ * Teamspeak 3 module general settings.
  */
-function teamspeak3_admin() {
+function teamspeak3_admin_settings() {
 
   $form = array();
 
   $form['server_settings'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Server'),
-    '#collapsible' => TRUE,
+    '#title' => t('General settings'),
+    '#collapsible' => FALSE,
     '#collapsed' => FALSE,
     '#group' => 'settings',
   );
@@ -50,10 +50,21 @@ function teamspeak3_admin() {
     '#description' => t("Virtual server id (default = 1)"),
   );
 
+  return system_settings_form($form);
+
+}
+
+/**
+ * Teamspeak 3 module authentication settings.
+ */
+function teamspeak3_admin_authentication() {
+
+  $form = array();
+
   $form['auth_settings'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Authentication'),
-    '#collapsible' => TRUE,
+    '#title' => t('Authentication settings'),
+    '#collapsible' => FALSE,
     '#collapsed' => FALSE,
     '#group' => 'settings',
   );
@@ -64,11 +75,11 @@ function teamspeak3_admin() {
     '#default_value' => variable_get('teamspeak3_username', ''),
     '#size' => 40,
     '#required' => TRUE,
-    '#description' => t("Username"),
+    '#description' => t("Server query username"),
   );
 
   $form['auth_settings']['teamspeak3_password'] = array(
-    '#type' => 'textfield',
+    '#type' => 'password',
     '#title' => t('Password'),
     '#default_value' => variable_get('teamspeak3_password', ''),
     '#size' => 40,
@@ -76,11 +87,22 @@ function teamspeak3_admin() {
     '#description' => t("Server query password"),
   );
 
+  return system_settings_form($form);
+
+}
+
+/**
+ * Teamspeak 3 module advanced settings.
+ */
+function teamspeak3_admin_advanced() {
+
+  $form = array();
+
   $form['advanced_settings'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Advanced'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
+    '#title' => t('Advanced settings'),
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
     '#group' => 'settings',
   );
 
@@ -113,10 +135,11 @@ function teamspeak3_admin() {
 
 }
 
+
 /**
- * Implements hook_admin_validate().
+ * Vaildate the general settings form.
  */
-function teamspeak3_admin_validate($form, &$form_state) {
+function teamspeak3_admin_settings_validate($form, &$form_state) {
 
   if (!is_numeric($form_state['values']['teamspeak3_port'])) {
     form_set_error('teamspeak3_port', t('Server query port must be numeric'));
@@ -129,6 +152,14 @@ function teamspeak3_admin_validate($form, &$form_state) {
   if (!is_numeric($form_state['values']['teamspeak3_server_id'])) {
     form_set_error('teamspeak3_server_id', t('Virtual server id must be numeric'));
   }
+
+}
+
+
+/**
+ * Vaildate the advanced settings form.
+ */
+function teamspeak3_admin_advanced_validate($form, &$form_state) {
 
   if (!is_numeric($form_state['values']['teamspeak3_timeout'])) {
     form_set_error('teamspeak3_timeout', t('Socket connection timeout must be numeric'));

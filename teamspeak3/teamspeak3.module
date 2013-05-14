@@ -14,18 +14,54 @@ function teamspeak3_menu() {
 
   $items['admin/config/teamspeak'] = array(
     'title' => 'Teamspeak',
-    'access arguments' => array('administer teamspeak'),
-    'file' => 'teamspeak3.admin.inc',
+    'description' => 'Teamspeak 3 module configuration',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('administer site configuration'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
   );
 
   $items['admin/config/teamspeak/settings'] = array(
     'title' => 'Settings',
     'description' => 'Configure the Teamspeak 3 module',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('teamspeak3_admin'),
+    'page arguments' => array('teamspeak3_admin_settings'),
     'access arguments' => array('administer teamspeak'),
     'file' => 'teamspeak3.admin.inc',
     'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['admin/config/teamspeak/settings/general'] = array(
+    'title' => 'Settings',
+    'description' => 'General settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('teamspeak3_admin_settings'),
+    'access arguments' => array('administer teamspeak'),
+    'file' => 'teamspeak3.admin.inc',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  $items['admin/config/teamspeak/settings/authentication'] = array(
+    'title' => 'Authentication',
+    'description' => 'Authentication settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('teamspeak3_admin_authentication'),
+    'access arguments' => array('administer teamspeak'),
+    'file' => 'teamspeak3.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -8,
+  );
+
+  $items['admin/config/teamspeak/settings/advanced'] = array(
+    'title' => 'Advanced',
+    'description' => 'Advanced settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('teamspeak3_admin_advanced'),
+    'access arguments' => array('administer teamspeak'),
+    'file' => 'teamspeak3.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+    'weight' => -6,
   );
 
   return $items;
