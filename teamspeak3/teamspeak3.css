@@ -20,6 +20,7 @@
 .teamspeak-viewer .teamspeak-item {
   margin-left: 18px;
   clear: both;
+  line-height: 18px;
 }
 .teamspeak-viewer .teamspeak-label {
   float: left;
