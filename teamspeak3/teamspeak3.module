@@ -11,18 +11,17 @@
 function teamspeak3_menu() {
 
   $items = array();
-
-  $items['admin/config/teamspeak'] = array(
-    'title' => 'Teamspeak',
-    'description' => 'Teamspeak 3 module configuration',
+  
+  $items['admin/config/gaming'] = array(
+    'title' => 'Gaming',
     'page callback' => 'system_admin_menu_block_page',
     'access arguments' => array('administer site configuration'),
     'file' => 'system.admin.inc',
     'file path' => drupal_get_path('module', 'system'),
   );
 
-  $items['admin/config/teamspeak/settings'] = array(
-    'title' => 'Settings',
+  $items['admin/config/gaming/teamspeak'] = array(
+    'title' => 'Teamspeak',
     'description' => 'Configure the Teamspeak 3 module',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('teamspeak3_admin_settings'),
@@ -31,7 +30,7 @@ function teamspeak3_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
-  $items['admin/config/teamspeak/settings/general'] = array(
+  $items['admin/config/gaming/teamspeak/settings/general'] = array(
     'title' => 'Settings',
     'description' => 'General settings',
     'page callback' => 'drupal_get_form',
@@ -42,7 +41,7 @@ function teamspeak3_menu() {
     'weight' => -10,
   );
 
-  $items['admin/config/teamspeak/settings/authentication'] = array(
+  $items['admin/config/gaming/teamspeak/settings/authentication'] = array(
     'title' => 'Authentication',
     'description' => 'Authentication settings',
     'page callback' => 'drupal_get_form',
@@ -53,7 +52,7 @@ function teamspeak3_menu() {
     'weight' => -8,
   );
 
-  $items['admin/config/teamspeak/settings/advanced'] = array(
+  $items['admin/config/gaming/teamspeak/settings/advanced'] = array(
     'title' => 'Advanced',
     'description' => 'Advanced settings',
     'page callback' => 'drupal_get_form',
@@ -328,7 +327,7 @@ function teamspeak3_render() {
   $imagespath = base_path() . drupal_get_path('module', 'teamspeak3') . '/images/';
 
   // If cache is enabled and we got data set in the cache variable.
-  if (($cachetime > 0) && ($cachedata != NULL) && ($lastcachetime != NULL) && (($lastcachetime + ($cachetime)) > time())) {
+  if (($cachetime > 0) && ($cachedata != NULL) && ($lastcachetime != NULL) && (($lastcachetime + ($cachetime)) > REQUEST_TIME)) {
     // Fetch block content from the cache.
     return $cachedata;
   }
@@ -389,7 +388,7 @@ function teamspeak3_render() {
       // Cache the output.
       if ($cachetime > 0) {
         variable_set('teamspeak3_cache_data', $output);
-        variable_set('teamspeak3_last_cache_time', time());
+        variable_set('teamspeak3_last_cache_time', REQUEST_TIME);
       }
 
     }
