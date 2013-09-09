@@ -224,7 +224,7 @@ function teamspeak3_render_users($usersdata, $parent_id, $imagespath) {
 
       $output .= '<div class="teamspeak-item">';
       $output .= '<div class="teamspeak-label">';
-      $output .= '<img src="' . $imagespath . $icon . '" />' . htmlentities($user["client_nickname"], ENT_COMPAT | ENT_HTML401, "ISO-8859-1");
+      $output .= '<img src="' . $imagespath . $icon . '" />' . htmlentities($user["client_nickname"], ENT_COMPAT, "ISO-8859-1");
       $output .= '</div></div>';
 
     }
