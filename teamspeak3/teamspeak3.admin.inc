@@ -118,17 +118,9 @@ function teamspeak3_admin_advanced() {
     '#type' => 'select',
     '#title' => t('Cache time'),
     '#default_value' => variable_get('teamspeak3_cache_time', 30),
-    '#description' => t("How many seconds you want to keep the data cache (0 = no cache)"),
-    '#options' => drupal_map_assoc(array(0,
-                                         10,
-                                         20,
-                                         30,
-                                         60,
-                                         120,
-                                         300,
-                                         600,
-                                         1800,
-                                         3600)),
+    '#description' => t("How many seconds you want to keep the data cache"),
+    '#options' => drupal_map_assoc(array(0, 10, 20, 30, 60, 120,
+                                         300, 600, 1800, 3600)),
   );
 
   return system_settings_form($form);
@@ -146,7 +138,7 @@ function teamspeak3_admin_settings_validate($form, &$form_state) {
   }
 
   if (((int) $form_state['values']['teamspeak3_port'] < 1) || ((int) $form_state['values']['teamspeak3_port'] > 65535)) {
-    form_set_error('teamspeak3_port', t('Server query port must be in range 1-65535'));
+    form_set_error('teamspeak3_port', t('Server query port must be in range [1-65535]'));
   }
 
   if (!is_numeric($form_state['values']['teamspeak3_server_id'])) {

@@ -27,11 +27,11 @@
 }
 .teamspeak-error {
   font-size: 11px;
-  color: #ff0000;
+  color: #FF0000;
 }
 .teamspeak-spacer {
   text-align: center;
-  margin: 1px 0px 1px -18px;
+  margin: 1px 0 1px -18px;
 }
 .teamspeak-spacer .teamspeak-spacer-line {
   height: 1px;
