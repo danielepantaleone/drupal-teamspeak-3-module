@@ -16,8 +16,3 @@ As usual for Drupal 7.x modules you can install this one in 2 ways:
 ## Configuration
 
 Navigate to: **Admin** > **Configuration** > **Teamspeak** > **Settings** (*admin/config/teamspeak/settings* if you have clean URL enabled) and fill in the configuration form with correct data. The module provide an internal block cache system which is independent from the Drupal 7 block cache. In the **Advanced** category of configuration form, you can tune your cache preferences, together with the Teamspeak 3 server connection timeout.
-
-## Support
-
-For support regarding Drupal 7 you may ask for help on the official website: http://drupal.org/<br>
-For support regarding this module you can find me on IRC on **#goreclan** @ **Quakenet** or you can reach me by sending an email to **danielepantaleone [at] icloud [dot] com**
